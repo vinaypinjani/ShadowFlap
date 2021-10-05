@@ -39,7 +39,7 @@ public class PlasticPipe extends Pipe{
    Returns a bounding box for the upper pipe.
     */
     public Rectangle getUpperRectangle() {
-        return new Rectangle(x, y- PLASTIC_PIPE_IMAGE.getHeight( ), PLASTIC_PIPE_IMAGE.getWidth(), PLASTIC_PIPE_IMAGE.getHeight());
+        return new Rectangle(x, y- PLASTIC_PIPE_IMAGE.getHeight(), PLASTIC_PIPE_IMAGE.getWidth(), PLASTIC_PIPE_IMAGE.getHeight());
     }
 
     /*

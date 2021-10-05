@@ -6,10 +6,12 @@ import java.util.Random;
 public class Level0 extends Level {
     private final Image BACKGROUND_IMAGE;
     private final String INSTRUCTION_MESSAGE; // String with instruction message.
-    private int MAX_SCORE; // Hold the winning score for the level
-    private int numHearts; // The number of lives for the level
+    private final int MAX_SCORE; // Hold the winning score for the level
+    private final int MAX_LIVES;
+    private int currLives; // The number of lives for the level
     private boolean levelOver; // Indicates if the level is won
     private boolean levelStarted;
+    private boolean levelWon;
     private boolean pipesInitiated;
     private int currentPipe;
 
@@ -20,11 +22,13 @@ public class Level0 extends Level {
         this.BACKGROUND_IMAGE = new Image("res/level-0/background.png");
         this.INSTRUCTION_MESSAGE = "PRESS SPACE TO START";
         this.MAX_SCORE = 10;
-        this.numHearts = 3; // Initializes level
+        this.MAX_LIVES = 3;
+        this.currLives= 3; // Initializes level
         this.levelOver = false;
         this.levelStarted = false;
         this.pipesInitiated = false;
         this.currentPipe = 0;
+        this.levelWon = false;
 
         this.numPipes = 0;
         this.plasticPipes = new PlasticPipe[MAX_SCORE];
@@ -32,6 +36,10 @@ public class Level0 extends Level {
 
     public void birdPassed() {
         currentPipe++;
+        if (currentPipe >= MAX_SCORE) {
+            levelWon = true;
+        }
+
     }
 
     public Rectangle returnUpperRectangle() {
@@ -51,6 +59,8 @@ public class Level0 extends Level {
         levelOver = true;
     }
 
+    public boolean getLevelWon() {return levelWon;}
+
 
     public void setLevelStarted(boolean levelStarted) {
         this.levelStarted = levelStarted;
@@ -62,8 +72,11 @@ public class Level0 extends Level {
 
     public void update(int frame) {
         BACKGROUND_IMAGE.drawFromTopLeft(0, 0);
+
         if (levelStarted && !levelOver) {
-            if (frame % 100 == 0) {
+            drawHearts(MAX_LIVES,currLives);
+            if (frame % 100 == 0 && numPipes < MAX_SCORE) {
+
                 plasticPipes[numPipes] = new PlasticPipe();
                 plasticPipes[numPipes].update();
                 pipesInitiated = true;
@@ -75,7 +88,7 @@ public class Level0 extends Level {
             }
 
 
-            if (currentPipe == 10) {
+            if (levelWon) {
                 levelOver = true;
                 levelStarted = false;
             }

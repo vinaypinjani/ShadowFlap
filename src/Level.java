@@ -1,18 +1,23 @@
 import bagel.Font;
+import bagel.Image;
 import bagel.util.Point;
 import bagel.Window;
 
 public abstract class Level {
+    private final Image EMPTY_HEART;
+    private final Image FULL_HEART;
     private final Point WINDOW_CENTRE; // Point for centre of the window
     private final int fontSize; // Font size used for the game.
     protected final Font font; // Holds the font used for the game.
-    private final String INSTRUCTION_MESSAGE; // String with instruction message.
-    private final String COLLISION_MESSAGE; // String with collision message.
-    private final String SCORE_MESSAGE; // String with score message.
-    private final String LEVEL_UP_MESSAGE;
+    protected final String INSTRUCTION_MESSAGE; // String with instruction message.
+    protected final String COLLISION_MESSAGE; // String with collision message.
+    protected final String SCORE_MESSAGE; // String with score message.
+    protected final String LEVEL_UP_MESSAGE;
 
 
     public Level() {
+        this.EMPTY_HEART = new Image("res/level/noLife.png");
+        this.FULL_HEART = new Image("res/level/fullLife.png");
         this.WINDOW_CENTRE  = new Point(Window.getWidth() / 2.0, Window.getHeight() / 2.0);
         this.fontSize = 48;
         this.font = new Font("res/font/slkscr.ttf", fontSize);
@@ -46,6 +51,22 @@ public abstract class Level {
 
     public void printInstructionMessage() {
         font.drawString(INSTRUCTION_MESSAGE, getStringCentre(INSTRUCTION_MESSAGE).x, getStringCentre(INSTRUCTION_MESSAGE).y);
+    }
+
+    public void drawHearts(int maxLives, int remainingLives) {
+        final double SPACE = 50;
+        final double HEART_Y = 15;
+        double x = 100;
+        for (int i =0; i < remainingLives; i++) {
+
+            FULL_HEART.draw(x, HEART_Y);
+            x = x + FULL_HEART.getWidth() + SPACE;
+        }
+        for (int i = 0; i < maxLives - remainingLives; i++) {
+            System.out.println(x);
+            EMPTY_HEART.draw(x, HEART_Y);
+            x = x + EMPTY_HEART.getWidth() + SPACE;
+        }
     }
 
 }

@@ -89,6 +89,9 @@ public class ShadowFlap extends AbstractGame {
                     if (checkCross()) {
                         score++;
                         LEVEL.birdPassed();
+                        if (LEVEL.getLevelWon()) {
+                            gameWin= true;
+                        }
                     }
                 }
 
