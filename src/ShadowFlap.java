@@ -3,8 +3,9 @@ import bagel.util.Point;
 
 /**
  * Skeleton Code for SWEN20003 Project 2, Semester 2, 2021
- *
+ * <p>
  * Please filling your name below
+ *
  * @ author: Vinay Pinjani
  */
 public class ShadowFlap extends AbstractGame {
@@ -18,7 +19,7 @@ public class ShadowFlap extends AbstractGame {
 
     private final Point WINDOW_CENTRE; // Point for centre of the window
     private final Point SCORE_POINT; // Point at which score is displayed.
-    private final String INSTRUCTION_MESSAGE; // String with instruction message.
+
     private final String COLLISION_MESSAGE; // String with collision message.
     private final String WIN_MESSAGE; // String with win message.
     private final String SCORE_MESSAGE; // String with score message.
@@ -31,14 +32,13 @@ public class ShadowFlap extends AbstractGame {
     private boolean startGame; // Indicates if the game is started.
 
 
-
     public ShadowFlap() {
         //this.backgroundImage = new Image("res/background.png");
         //this.fontSize = 48;
         //this.font = new Font("res/slkscr.ttf", fontSize);
-        this.WINDOW_CENTRE  = new Point(Window.getWidth() / 2.0, Window.getHeight() / 2.0);
+        this.WINDOW_CENTRE = new Point(Window.getWidth() / 2.0, Window.getHeight() / 2.0);
         this.SCORE_POINT = new Point(100, 100);
-        this.INSTRUCTION_MESSAGE = "PRESS SPACE TO START";
+
         this.COLLISION_MESSAGE = "GAME OVER!";
         this.WIN_MESSAGE = "CONGRATULATIONS!";
         this.SCORE_MESSAGE = "FINAL SCORE ";
@@ -70,15 +70,65 @@ public class ShadowFlap extends AbstractGame {
      */
     @Override
     public void update(Input input) {
+        LEVEL.update(frameCounter);
+        if (input.wasPressed(Keys.ESCAPE)) {
+            Window.close(); // Closes window if escape is pressed.
+        }
 
         if (input.wasPressed(Keys.SPACE)) {
             LEVEL.setLevelStarted(true);
         }
-        if (LEVEL.getLevelStarted()) {
-            frameCounter++;
+
+
+
+        if (!gameOver && !gameWin) {
+            if (LEVEL.getLevelStarted()) {
+                frameCounter++;
+                if (LEVEL.getPipesInitiated()) {
+                    detectCollision();
+                    if (checkCross()) {
+                        score++;
+                        LEVEL.birdPassed();
+                    }
+                }
+
+                bird.flap(frameCounter % 10 != 0); // Bird flaps wings every tenth frame.}
+                if (input.wasPressed(Keys.SPACE)) {
+                    bird.fly(); // Bird flies when space bar pressed.
+                    bird.setVelocity(INITIAL_VELOCITY); // Resets the velocity.
+                } else {
+                    bird.fall(); // Initiates falling if space not pressed.
+                }
+            } else {
+                LEVEL.printInstructionMessage();
+            }
+        } else if (gameOver && !gameWin) {
+            LEVEL.setLevelOver();
+            LEVEL.printScore(score);
+            LEVEL.printCollisionMessage();
+        } else if (gameWin) {
+            LEVEL.setLevelOver();
+            LEVEL.printLevelUpMessage();
         }
-        LEVEL.update(frameCounter);
+
 
     }
+
+    public void detectCollision() {
+        // Checks if the bounding box for both objects intersect.
+        if (bird.getRectangle().intersects(LEVEL.returnUpperRectangle()) ||
+                bird.getRectangle().intersects(LEVEL.returnLowerRectangle())) {
+            gameOver = true; // Indicates game over.
+        }
+        // Checks if the bird is out of the window.
+        if (bird.getRectangle().centre().y < 0 || bird.getRectangle().centre().y > Window.getHeight()) {
+            gameOver = true; // Indicates game over.
+        }
+    }
+
+    public boolean checkCross() {
+        return bird.getRectangle().centre().x > LEVEL.returnUpperRectangle().right();
+    }
+
 
 }
