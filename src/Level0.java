@@ -1,6 +1,7 @@
 import bagel.Image;
 import bagel.util.Rectangle;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Level0 extends Level {
@@ -15,7 +16,7 @@ public class Level0 extends Level {
     private boolean pipesInitiated;
     private int currentPipe;
 
-    private PlasticPipe[] plasticPipes;
+    private ArrayList<PlasticPipe> plasticPipes;
     private int numPipes;
 
     public Level0() {
@@ -31,29 +32,44 @@ public class Level0 extends Level {
         this.levelWon = false;
 
         this.numPipes = 0;
-        this.plasticPipes = new PlasticPipe[MAX_SCORE];
+        this.plasticPipes = new ArrayList<PlasticPipe>();
     }
 
     public void birdPassed() {
         currentPipe++;
-        if (currentPipe >= MAX_SCORE) {
-            levelWon = true;
-        }
 
+    }
+
+    public void loseLife() {
+        System.out.println("Called");
+        if (currLives > 0) {
+            currLives--;
+            currentPipe++;
+        }else {
+            levelOver = true;
+        }
+        System.out.println(currLives);
+        System.out.println(levelOver);
+
+    }
+    public void setLevelWon() {levelWon = true;}
+
+    public int getMaxScore() {
+        return MAX_SCORE;
     }
 
     public Rectangle returnUpperRectangle() {
-       return plasticPipes[currentPipe].getUpperRectangle();
+       return plasticPipes.get(currentPipe).getUpperRectangle();
     }
 
     public Rectangle returnLowerRectangle() {
-        return plasticPipes[currentPipe].getLowerRectangle();
+        return plasticPipes.get(currentPipe).getLowerRectangle();
     }
 
     public boolean getPipesInitiated() {return pipesInitiated;}
 
     public double returnPipeEnd() {
-        return plasticPipes[currentPipe].pipeEnd();
+        return plasticPipes.get(currentPipe).pipeEnd();
     }
     public void setLevelOver() {
         levelOver = true;
@@ -61,6 +77,9 @@ public class Level0 extends Level {
 
     public boolean getLevelWon() {return levelWon;}
 
+    public boolean isLevelOver() {
+        return levelOver;
+    }
 
     public void setLevelStarted(boolean levelStarted) {
         this.levelStarted = levelStarted;
@@ -75,21 +94,20 @@ public class Level0 extends Level {
 
         if (levelStarted && !levelOver) {
             drawHearts(MAX_LIVES,currLives);
-            if (frame % 100 == 0 && numPipes < MAX_SCORE) {
-
-                plasticPipes[numPipes] = new PlasticPipe();
-                plasticPipes[numPipes].update();
+            if (frame % 100 == 0) {
+                plasticPipes.add(new PlasticPipe());
+                plasticPipes.get(numPipes).update();
                 pipesInitiated = true;
                 numPipes++;
             }
 
             for (int i = 0; i < numPipes; i++) {
-                this.plasticPipes[i].update();
+                this.plasticPipes.get(i).update();
             }
 
 
             if (levelWon) {
-                levelOver = true;
+
                 levelStarted = false;
             }
         }

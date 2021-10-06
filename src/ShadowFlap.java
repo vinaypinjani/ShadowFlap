@@ -80,19 +80,28 @@ public class ShadowFlap extends AbstractGame {
         }
 
 
-
         if (!gameOver && !gameWin) {
             if (LEVEL.getLevelStarted()) {
+
+
                 frameCounter++;
                 if (LEVEL.getPipesInitiated()) {
+
                     detectCollision();
+                    if (LEVEL.isLevelOver()) {
+                        gameOver = true;
+                    }
                     if (checkCross()) {
                         score++;
+                        if (score >= LEVEL.getMaxScore()) {
+                            LEVEL.setLevelWon();
+                        }
                         LEVEL.birdPassed();
                         if (LEVEL.getLevelWon()) {
-                            gameWin= true;
+                            gameWin = true;
                         }
                     }
+                    LEVEL.printScoreCounter(score);
                 }
 
                 bird.flap(frameCounter % 10 != 0); // Bird flaps wings every tenth frame.}
@@ -106,7 +115,6 @@ public class ShadowFlap extends AbstractGame {
                 LEVEL.printInstructionMessage();
             }
         } else if (gameOver && !gameWin) {
-            LEVEL.setLevelOver();
             LEVEL.printScore(score);
             LEVEL.printCollisionMessage();
         } else if (gameWin) {
@@ -121,7 +129,9 @@ public class ShadowFlap extends AbstractGame {
         // Checks if the bounding box for both objects intersect.
         if (bird.getRectangle().intersects(LEVEL.returnUpperRectangle()) ||
                 bird.getRectangle().intersects(LEVEL.returnLowerRectangle())) {
-            gameOver = true; // Indicates game over.
+
+                LEVEL.loseLife();
+            // Indicates game over.
         }
         // Checks if the bird is out of the window.
         if (bird.getRectangle().centre().y < 0 || bird.getRectangle().centre().y > Window.getHeight()) {

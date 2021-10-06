@@ -13,6 +13,7 @@ public abstract class Level {
     protected final String COLLISION_MESSAGE; // String with collision message.
     protected final String SCORE_MESSAGE; // String with score message.
     protected final String LEVEL_UP_MESSAGE;
+    protected final String SCORE_COUNTER;
 
 
     public Level() {
@@ -25,6 +26,7 @@ public abstract class Level {
         this.COLLISION_MESSAGE = "GAME OVER!";
         this.SCORE_MESSAGE = "FINAL SCORE ";
         this.LEVEL_UP_MESSAGE = "LEVEL-UP!";
+        this.SCORE_COUNTER = "SCORE: ";
 
 
     }
@@ -53,20 +55,26 @@ public abstract class Level {
         font.drawString(INSTRUCTION_MESSAGE, getStringCentre(INSTRUCTION_MESSAGE).x, getStringCentre(INSTRUCTION_MESSAGE).y);
     }
 
+    public void printScoreCounter(int score) {
+        font.drawString(SCORE_COUNTER + score, 100, 100);
+
+    }
+
     public void drawHearts(int maxLives, int remainingLives) {
         final double SPACE = 50;
         final double HEART_Y = 15;
         double x = 100;
         for (int i =0; i < remainingLives; i++) {
 
-            FULL_HEART.draw(x, HEART_Y);
+            FULL_HEART.drawFromTopLeft(x, HEART_Y);
             x = x + FULL_HEART.getWidth() + SPACE;
         }
         for (int i = 0; i < maxLives - remainingLives; i++) {
-            System.out.println(x);
-            EMPTY_HEART.draw(x, HEART_Y);
-            x = x + EMPTY_HEART.getWidth() + SPACE;
+            EMPTY_HEART.drawFromTopLeft(x, HEART_Y);
+            x = x + SPACE;
         }
     }
+
+
 
 }
