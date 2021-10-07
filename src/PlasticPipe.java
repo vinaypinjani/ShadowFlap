@@ -36,7 +36,7 @@ public class PlasticPipe extends Pipe{
         PLASTIC_PIPE_IMAGE.drawFromTopLeft(x, PLASTIC_Y - PLASTIC_PIPE_IMAGE.getHeight());
         PLASTIC_PIPE_IMAGE.drawFromTopLeft(x, PLASTIC_Y + PIPE_GAP, new DrawOptions().setRotation(Math.PI));
 
-        x -= STEP_SIZE;
+        x -= stepSize;
     }
 
     /*

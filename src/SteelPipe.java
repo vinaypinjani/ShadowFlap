@@ -17,6 +17,6 @@ public class SteelPipe extends Pipe{
         STEEL_PIPE_IMAGE.drawFromTopLeft(x, STEEL_Y - STEEL_PIPE_IMAGE.getHeight());
         STEEL_PIPE_IMAGE.drawFromTopLeft(x, STEEL_Y + PIPE_GAP, new DrawOptions().setRotation(Math.PI));
 
-        x -= STEP_SIZE;
+        x -= stepSize;
     }
 }

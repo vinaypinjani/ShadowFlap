@@ -133,6 +133,12 @@ public class ShadowFlap extends AbstractGame {
         } else {
             bird.fall(); // Initiates falling if space not pressed.
         }
+        if (input.wasPressed(Keys.L)) {
+            Pipe.increaseStepSize();
+        }
+        if (input.wasPressed(Keys.K)) {
+            Pipe.decreaseStepSize();
+        }
     }
 
     public void detectCollision() {

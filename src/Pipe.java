@@ -9,16 +9,17 @@ public abstract class Pipe {
     protected final double INITIAL_X;
     protected double y;
     protected double x;
-    protected final double STEP_SIZE;
+    protected static double stepSize = 3;
+    protected static final double MAX_STEP = 5;
+    protected static final double MIN_STEP = 1;
 
     public Pipe() {
         HIGH_GAP = 100;
         LOW_GAP = 500;
         PIPE_GAP = 168;
         this.INITIAL_X = Window.getWidth();
-
-        this.STEP_SIZE = 3;
         x = INITIAL_X;
+
     }
 
     protected double getPipeY() {
@@ -27,6 +28,19 @@ public abstract class Pipe {
 
 
     public void update() {
+    }
 
+    public static void increaseStepSize() {
+       double newSize = stepSize + (stepSize*0.5);
+       if (newSize < MAX_STEP) {
+           stepSize = newSize;
+       }
+    }
+
+    public static void decreaseStepSize() {
+        double newSize = stepSize - (stepSize*0.5);
+        if (newSize > MIN_STEP) {
+            stepSize = newSize;
+        }
     }
 }

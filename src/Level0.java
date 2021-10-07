@@ -91,6 +91,8 @@ public class Level0 extends Level {
         return this.levelStarted;
     }
 
+
+
     public void update(int frame) {
         BACKGROUND_IMAGE.drawFromTopLeft(0, 0);
 
@@ -110,6 +112,5 @@ public class Level0 extends Level {
                 levelOver = true;
             }
         }
-
     }
 }
