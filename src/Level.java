@@ -67,7 +67,7 @@ public abstract class Level {
         for (int i =0; i < remainingLives; i++) {
 
             FULL_HEART.drawFromTopLeft(x, HEART_Y);
-            x = x + FULL_HEART.getWidth() + SPACE;
+            x = x + SPACE;
         }
         for (int i = 0; i < maxLives - remainingLives; i++) {
             EMPTY_HEART.drawFromTopLeft(x, HEART_Y);

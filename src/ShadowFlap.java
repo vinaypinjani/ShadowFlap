@@ -15,7 +15,8 @@ public class ShadowFlap extends AbstractGame {
 
     private final Bird bird; // Holds a bird object for the game.
     //private final Pipe pipe; // Holds a pipe object for the game.
-    private final Level0 LEVEL;
+    private final Level0 LEVEL0;
+    private final Level1 LEVEL1;
 
     private final Point WINDOW_CENTRE; // Point for centre of the window
     private final Point SCORE_POINT; // Point at which score is displayed.
@@ -30,6 +31,7 @@ public class ShadowFlap extends AbstractGame {
     private boolean gameOver; // Indicates if the game is over.
     private boolean gameWin; // Indicates if the game is won.
     private boolean startGame; // Indicates if the game is started.
+    private boolean levelUp;
 
 
     public ShadowFlap() {
@@ -51,7 +53,9 @@ public class ShadowFlap extends AbstractGame {
         this.startGame = false;
 
         this.bird = new Bird();
-        this.LEVEL = new Level0();
+        this.LEVEL0 = new Level0();
+        this.LEVEL1 = new Level1();
+        this.levelUp = false;
         //this.pipe = new Pipe();
 
     }
@@ -70,77 +74,82 @@ public class ShadowFlap extends AbstractGame {
      */
     @Override
     public void update(Input input) {
-        LEVEL.update(frameCounter);
-        if (input.wasPressed(Keys.ESCAPE)) {
-            Window.close(); // Closes window if escape is pressed.
-        }
-
-        if (input.wasPressed(Keys.SPACE)) {
-            LEVEL.setLevelStarted(true);
-        }
-
-
-        if (!gameOver && !gameWin) {
-            if (LEVEL.getLevelStarted()) {
-
-
-                frameCounter++;
-                if (LEVEL.getPipesInitiated()) {
-
-                    detectCollision();
-                    if (LEVEL.isLevelOver()) {
-                        gameOver = true;
-                    }
-                    if (checkCross()) {
-                        score++;
-                        if (score >= LEVEL.getMaxScore()) {
-                            LEVEL.setLevelWon();
-                        }
-                        LEVEL.birdPassed();
-                        if (LEVEL.getLevelWon()) {
-                            gameWin = true;
-                        }
-                    }
-                    LEVEL.printScoreCounter(score);
-                }
-
-                bird.flap(frameCounter % 10 != 0); // Bird flaps wings every tenth frame.}
-                if (input.wasPressed(Keys.SPACE)) {
-                    bird.fly(); // Bird flies when space bar pressed.
-                    bird.setVelocity(INITIAL_VELOCITY); // Resets the velocity.
-                } else {
-                    bird.fall(); // Initiates falling if space not pressed.
-                }
-            } else {
-                LEVEL.printInstructionMessage();
+        if (!levelUp) {
+            LEVEL0.update(frameCounter);
+            if (input.wasPressed(Keys.ESCAPE)) {
+                Window.close(); // Closes window if escape is pressed.
             }
-        } else if (gameOver && !gameWin) {
-            LEVEL.printScore(score);
-            LEVEL.printCollisionMessage();
-        } else if (gameWin) {
-            LEVEL.setLevelOver();
-            LEVEL.printLevelUpMessage();
+            if (input.wasPressed(Keys.SPACE)) {
+                LEVEL0.setLevelStarted(true);
+            }
+            if (!gameOver && !gameWin) {
+                if (LEVEL0.getLevelStarted()) {
+                    frameCounter++;
+                    LEVEL0.printScoreCounter(score);
+                    birdActions(input);
+                    if (LEVEL0.getPipesInitiated()) {
+                        detectCollision();
+                        if (LEVEL0.isLevelOver()) {
+                            gameOver = true;
+                        }
+                        if (checkCross()) {
+                            score++;
+                            if (score >= LEVEL0.getMaxScore()) {
+                                LEVEL0.setLevelWon();
+                            }
+                            LEVEL0.birdPassed();
+                            if (LEVEL0.getLevelWon()) {
+                                gameWin = true;
+                            }
+                        }
+                    }
+                } else {
+                    LEVEL0.printInstructionMessage();
+                }
+            } else if (gameOver && !gameWin) {
+                LEVEL0.printScore(score);
+                LEVEL0.printCollisionMessage();
+            } else if (gameWin) {
+                LEVEL0.setLevelOver();
+                LEVEL0.printLevelUpMessage();
+                LEVEL0.printScore(score);
+                levelUp = true;
+                frameCounter = 0;
+            }
+        } else {
+            LEVEL1.update(frameCounter);
+            frameCounter ++;
+
         }
 
 
+    }
+
+    public void birdActions(Input input) {
+        bird.flap(frameCounter % 10 != 0); // Bird flaps wings every tenth frame.}
+        if (input.wasPressed(Keys.SPACE)) {
+            bird.fly(); // Bird flies when space bar pressed.
+            bird.setVelocity(INITIAL_VELOCITY); // Resets the velocity.
+        } else {
+            bird.fall(); // Initiates falling if space not pressed.
+        }
     }
 
     public void detectCollision() {
         // Checks if the bounding box for both objects intersect.
-        if (bird.getRectangle().intersects(LEVEL.returnUpperRectangle()) ||
-                bird.getRectangle().intersects(LEVEL.returnLowerRectangle())) {
-
-                LEVEL.loseLife();
+        if (bird.getRectangle().intersects(LEVEL0.returnUpperRectangle()) ||
+                bird.getRectangle().intersects(LEVEL0.returnLowerRectangle())) {
+            LEVEL0.loseLife();
             // Indicates game over.
         }
         // Checks if the bird is out of the window.
         if (bird.getRectangle().centre().y < 0 || bird.getRectangle().centre().y > Window.getHeight()) {
-            gameOver = true; // Indicates game over.
+            LEVEL0.setLevelOver(); // Indicates game over.
         }
     }
 
     public boolean checkCross() {
-        return bird.getRectangle().centre().x > LEVEL.returnUpperRectangle().right();
+        return bird.getRectangle().centre().x > LEVEL0.returnUpperRectangle().right();
     }
 
 
