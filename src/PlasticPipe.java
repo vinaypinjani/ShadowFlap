@@ -12,7 +12,7 @@ public class PlasticPipe extends Pipe{
     private final double MID_GAP;
      // Initial x coordinate for the pipe.
     private final double[] PIPE_HEIGHTS_L0;
-    private final double PLASTIC_Y;
+
 
 
 
@@ -22,9 +22,9 @@ public class PlasticPipe extends Pipe{
 
         PIPE_HEIGHTS_L0 = new double[]{HIGH_GAP, MID_GAP, LOW_GAP};
         if (!isLevel1) {
-            PLASTIC_Y = PIPE_HEIGHTS_L0[new Random().nextInt(PIPE_HEIGHTS_L0.length)];
+            y = PIPE_HEIGHTS_L0[new Random().nextInt(PIPE_HEIGHTS_L0.length)];
         } else {
-            PLASTIC_Y = getPipeY();
+            y = getPipeY();
         }
 
     }
@@ -33,25 +33,13 @@ public class PlasticPipe extends Pipe{
 
     public void update() {
 
-        PLASTIC_PIPE_IMAGE.drawFromTopLeft(x, PLASTIC_Y - PLASTIC_PIPE_IMAGE.getHeight());
-        PLASTIC_PIPE_IMAGE.drawFromTopLeft(x, PLASTIC_Y + PIPE_GAP, new DrawOptions().setRotation(Math.PI));
+        PLASTIC_PIPE_IMAGE.drawFromTopLeft(x, y - PLASTIC_PIPE_IMAGE.getHeight());
+        PLASTIC_PIPE_IMAGE.drawFromTopLeft(x, y + PIPE_GAP, new DrawOptions().setRotation(Math.PI));
 
         x -= stepSize;
     }
 
-    /*
-   Returns a bounding box for the upper pipe.
-    */
-    public Rectangle getUpperRectangle() {
-        return new Rectangle(x, PLASTIC_Y - PLASTIC_PIPE_IMAGE.getHeight(), PLASTIC_PIPE_IMAGE.getWidth(), PLASTIC_PIPE_IMAGE.getHeight());
-    }
 
-    /*
-    Returns a bounding box for the lower pipe.
-     */
-    public Rectangle getLowerRectangle() {
-        return new Rectangle(x, PLASTIC_Y + PIPE_GAP, PLASTIC_PIPE_IMAGE.getWidth(), PLASTIC_PIPE_IMAGE.getHeight());
-    }
 
 
 }

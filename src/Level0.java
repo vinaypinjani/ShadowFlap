@@ -35,7 +35,6 @@ public class Level0 extends Level {
 
     public void birdPassed() {
         currentPipe++;
-
     }
 
     public void loseLife() {
@@ -45,9 +44,6 @@ public class Level0 extends Level {
         } else {
             levelOver = true;
         }
-        System.out.println(currLives);
-        System.out.println(levelOver);
-
     }
 
     public void setLevelWon() {

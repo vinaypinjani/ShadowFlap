@@ -60,6 +60,7 @@ public abstract class Level {
 
     }
 
+
     public void drawHearts(int maxLives, int remainingLives) {
         final double SPACE = 50;
         final double HEART_Y = 15;

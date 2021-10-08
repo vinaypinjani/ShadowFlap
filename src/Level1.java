@@ -1,4 +1,5 @@
 import bagel.Image;
+import bagel.util.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,6 +16,7 @@ public class Level1 extends Level{
     private boolean pipesInitiated;
     private boolean levelStarted;
     private boolean levelOver;
+    private int currentPipe;
 
 
     public Level1() {
@@ -27,7 +29,31 @@ public class Level1 extends Level{
         currPipe = 0;
         levelStarted = false;
         levelOver = false;
+        this.currentPipe = 0;
     }
+    public Rectangle returnUpperRectangle() {
+        return pipes.get(currentPipe).getUpperRectangle();
+    }
+
+    public Rectangle returnLowerRectangle() {
+        return pipes.get(currentPipe).getLowerRectangle();
+    }
+    public void birdPassed() {
+        currentPipe++;
+    }
+    public void loseLife() {
+        if (currLives > 1) {
+            currLives--;
+            currentPipe++;
+        } else {
+            levelOver = true;
+        }
+    }
+
+    public int getMaxScore() {return MAX_SCORE;}
+    public void setLevelWon() {levelWon = true;}
+    public boolean getLevelWon() {return levelWon;}
+
 
     public void update(int frame) {
         BACKGROUND_IMAGE.drawFromTopLeft(0,0);

@@ -115,10 +115,24 @@ public class ShadowFlap extends AbstractGame {
                 LEVEL0.printScore(score);
                 levelUp = true;
                 frameCounter = 0;
+                score = 0;
             }
         } else {
             LEVEL1.update(frameCounter);
-            frameCounter ++;
+            frameCounter++;
+            LEVEL1.printScoreCounter(score);
+            birdActions(input);
+            detectCollision();
+            if (checkCross()) {
+                score++;
+                if (score >= LEVEL1.getMaxScore()) {
+                    LEVEL1.setLevelWon();
+                }
+                LEVEL1.birdPassed();
+                if (LEVEL1.getLevelWon()) {
+                    gameWin = true;
+                }
+            }
 
         }
 
@@ -142,11 +156,19 @@ public class ShadowFlap extends AbstractGame {
     }
 
     public void detectCollision() {
-        // Checks if the bounding box for both objects intersect.
-        if (bird.getRectangle().intersects(LEVEL0.returnUpperRectangle()) ||
-                bird.getRectangle().intersects(LEVEL0.returnLowerRectangle())) {
-            LEVEL0.loseLife();
-            // Indicates game over.
+        if (!levelUp) {
+            // Checks if the bounding box for both objects intersect.
+            if (bird.getRectangle().intersects(LEVEL0.returnUpperRectangle()) ||
+                    bird.getRectangle().intersects(LEVEL0.returnLowerRectangle())) {
+                LEVEL0.loseLife();
+                // Indicates game over.
+            }
+        } else {
+            if (bird.getRectangle().intersects(LEVEL1.returnUpperRectangle()) ||
+                    bird.getRectangle().intersects(LEVEL1.returnLowerRectangle())) {
+                LEVEL1.loseLife();
+                // Indicates game over.
+            }
         }
         // Checks if the bird is out of the window.
         if (bird.getRectangle().centre().y < 0 || bird.getRectangle().centre().y > Window.getHeight()) {
@@ -155,7 +177,11 @@ public class ShadowFlap extends AbstractGame {
     }
 
     public boolean checkCross() {
-        return bird.getRectangle().centre().x > LEVEL0.returnUpperRectangle().right();
+        if (!levelUp) {
+            return (bird.getRectangle().centre().x > LEVEL0.returnUpperRectangle().right());
+        } else {
+            return (bird.getRectangle().centre().x > LEVEL1.returnUpperRectangle().right());
+        }
     }
 
 
