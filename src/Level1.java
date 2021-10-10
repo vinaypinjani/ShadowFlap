@@ -4,7 +4,7 @@ import bagel.util.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Level1 extends Level{
+public class Level1 extends Level {
     private final Image BACKGROUND_IMAGE;
     private final int MAX_SCORE; // Hold the winning score for the level
     private int currLives; // The number of lives for the level
@@ -19,6 +19,7 @@ public class Level1 extends Level{
     private int currentPipe;
 
 
+
     public Level1() {
         BACKGROUND_IMAGE = new Image("res/level-1/background.png");
         MAX_SCORE = 30;
@@ -30,35 +31,74 @@ public class Level1 extends Level{
         levelStarted = false;
         levelOver = false;
         this.currentPipe = 0;
+
     }
+    public boolean getPipesInitiated() {
+        return pipesInitiated;
+    }
+
+    public boolean getLevelStarted() {
+        return levelStarted;
+    }
+
+    public void setLevelStarted() {
+        levelStarted = true;
+    }
+
+
     public Rectangle returnUpperRectangle() {
-        return pipes.get(currentPipe).getUpperRectangle();
+        if (!pipes.get(currentPipe).isFlameOn()) {
+            return pipes.get(currentPipe).getUpperRectangle();
+        }
+        else {
+            return pipes.get(currentPipe).getFlameUpperRectangle();
+        }
     }
 
     public Rectangle returnLowerRectangle() {
-        return pipes.get(currentPipe).getLowerRectangle();
+        if (!pipes.get(currentPipe).isFlameOn()) {
+            return pipes.get(currentPipe).getLowerRectangle();
+        }
+        else {
+            return pipes.get(currentPipe).getFlameLowerRectangle();
+        }
     }
-    public void birdPassed() {
-        currentPipe++;
-    }
+
+
     public void loseLife() {
         if (currLives > 1) {
             currLives--;
-            currentPipe++;
+
         } else {
             levelOver = true;
         }
     }
 
-    public int getMaxScore() {return MAX_SCORE;}
-    public void setLevelWon() {levelWon = true;}
-    public boolean getLevelWon() {return levelWon;}
+    public boolean getLevelOver() {
+        return levelOver;
+    }
+
+    public void updateCurrentPipe() {
+        currentPipe++;
+    }
+
+    public int getMaxScore() {
+        return MAX_SCORE;
+    }
+
+    public void setLevelWon() {
+        levelWon = true;
+    }
+
+    public boolean getLevelWon() {
+        return levelWon;
+    }
 
 
     public void update(int frame) {
-        BACKGROUND_IMAGE.drawFromTopLeft(0,0);
+        BACKGROUND_IMAGE.drawFromTopLeft(0, 0);
 
-        if ( !levelOver) {
+        if (levelStarted &&  !levelOver) {
 
             if (frame % 100 == 0) {
                 if (new Random().nextBoolean()) {
@@ -70,7 +110,7 @@ public class Level1 extends Level{
                 numPipes++;
             }
             for (int i = 0; i < numPipes; i++) {
-                this.pipes.get(i).update();
+                this.pipes.get(i).update(frame);
             }
             drawHearts(MAX_LIVES, currLives);
             if (levelWon) {

@@ -21,7 +21,7 @@ public class Level0 extends Level {
     public Level0() {
         this.BACKGROUND_IMAGE = new Image("res/level-0/background.png");
         this.INSTRUCTION_MESSAGE = "PRESS SPACE TO START";
-        this.MAX_SCORE = 10;
+        this.MAX_SCORE = 1;
         this.MAX_LIVES = 3;
         this.currLives = 3; // Initializes level
         this.levelOver = false;
@@ -33,17 +33,19 @@ public class Level0 extends Level {
         this.plasticPipes = new ArrayList<PlasticPipe>();
     }
 
-    public void birdPassed() {
-        currentPipe++;
-    }
+
 
     public void loseLife() {
         if (currLives > 1) {
             currLives--;
-            currentPipe++;
+
         } else {
             levelOver = true;
         }
+    }
+
+    public void updateCurrentPipe() {
+        currentPipe++;
     }
 
     public void setLevelWon() {
@@ -79,8 +81,8 @@ public class Level0 extends Level {
         return levelOver;
     }
 
-    public void setLevelStarted(boolean levelStarted) {
-        this.levelStarted = levelStarted;
+    public void setLevelStarted() {
+        this.levelStarted = true;
     }
 
     public boolean getLevelStarted() {
@@ -100,7 +102,7 @@ public class Level0 extends Level {
                 numPipes++;
             }
             for (int i = 0; i < numPipes; i++) {
-                this.plasticPipes.get(i).update();
+                this.plasticPipes.get(i).update(frame);
             }
             drawHearts(MAX_LIVES, currLives);
             if (levelWon) {

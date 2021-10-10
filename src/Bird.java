@@ -9,6 +9,8 @@ public class Bird {
    */
     private final Image BIRD_DOWN_L0; // Loads bird wing down image.
     private final Image BIRD_UP_L0; // Loads bird wing up image.
+    private final Image BIRD_DOWN_L1;
+    private final Image BIRD_UP_L1;
     private final double X; // The X value for constant throughout the game.
     private final double INITIAL_Y; // The Y value for the bird at spawn.
     private final double ACCELERATION; // The downward acceleration for the bird.
@@ -17,6 +19,7 @@ public class Bird {
 
     private double y; // Holds the current y position for the bird.
     private double velocity; // holds the current velocity of the bird.
+    private boolean isLevel1;
 
     /*
     Constructor initializes all Final values for bird with given values.
@@ -24,11 +27,14 @@ public class Bird {
     public Bird() {
         this.BIRD_DOWN_L0 = new Image("res/level-0/birdWingDown.png");
         this.BIRD_UP_L0 = new Image("res/level-0/birdWingUp.png");
+        this.BIRD_DOWN_L1 = new Image("res/level-1/birdWingDown.png");
+        this.BIRD_UP_L1 = new Image("res/level-1/birdWingUp.png");
         this.X = 200;
         this.INITIAL_Y = 350;
         this.ACCELERATION = 0.4;
         this.MAX_VELOCITY = 10;
         this.SPEED = 6.0;
+        this.isLevel1 = false;
 
         this.y = INITIAL_Y; // Current y position is set as the initial y position.
     }
@@ -72,14 +78,32 @@ public class Bird {
      */
     public void flap(boolean wingDown) {
         if (wingDown) {
-            BIRD_DOWN_L0.draw(X, y); // Draws bird with wings down.
+            if (!isLevel1) {
+                BIRD_DOWN_L0.draw(X, y); // Draws bird with wings down.
+            }
+            else {
+                BIRD_DOWN_L1.draw(X, y);
+            }
         } else {
-            BIRD_UP_L0.draw(X, y); // Draws bird with wings up.
+            if (!isLevel1) {
+                BIRD_UP_L0.draw(X, y); // Draws bird with wings up.
+            }
+            else {
+                BIRD_UP_L1.draw(X, y);
+            }
+
         }
     }
 
     public double getX() {
         return X;
+    }
+    public void setLevel1() {
+        isLevel1 = true;
+    }
+
+    public void resetPosition() {
+        y = INITIAL_Y;
     }
 
 

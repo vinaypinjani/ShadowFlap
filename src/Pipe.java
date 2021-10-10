@@ -1,4 +1,7 @@
+import bagel.DrawOptions;
+import bagel.Image;
 import bagel.Window;
+import bagel.util.Point;
 import bagel.util.Rectangle;
 
 import java.util.Random;
@@ -15,6 +18,9 @@ public abstract class Pipe {
     protected static final double MIN_STEP = 1;
     private final double PIPE_WIDTH;
     private final double PIPE_HEIGHT;
+    private final double FLAME_HEIGHT;
+
+    protected boolean flameOn;
 
 
     public Pipe() {
@@ -26,14 +32,18 @@ public abstract class Pipe {
         PIPE_WIDTH = 65;
         PIPE_HEIGHT = 768;
 
+        this.FLAME_HEIGHT = 39;
+        flameOn = false;
+
     }
+    public abstract boolean isFlameOn();
 
     protected double getPipeY() {
         return (new Random().nextDouble() * (LOW_GAP - HIGH_GAP)) + HIGH_GAP;
     }
 
 
-    public void update() {
+    public void update(int frame) {
     }
 
     public static void increaseStepSize() {
@@ -50,6 +60,11 @@ public abstract class Pipe {
         }
     }
 
+    public void drawPipes(Image image) {
+        image.drawFromTopLeft(x, y - PIPE_HEIGHT);
+        image.drawFromTopLeft(x, y + PIPE_GAP, new DrawOptions().setRotation(Math.PI));
+    }
+
     /*
   Returns a bounding box for the upper pipe.
    */
@@ -63,4 +78,14 @@ public abstract class Pipe {
     public Rectangle getLowerRectangle() {
         return new Rectangle(x, y + PIPE_GAP, PIPE_WIDTH, PIPE_HEIGHT);
     }
+
+    public Rectangle getFlameUpperRectangle() {
+        return new Rectangle(x, y - PIPE_HEIGHT, PIPE_WIDTH, PIPE_HEIGHT + FLAME_HEIGHT);
+    }
+
+    public Rectangle getFlameLowerRectangle() {
+        return new Rectangle(x, y + PIPE_GAP - FLAME_HEIGHT, PIPE_WIDTH, PIPE_HEIGHT + FLAME_HEIGHT);
+    }
+
+
 }

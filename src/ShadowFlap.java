@@ -27,6 +27,7 @@ public class ShadowFlap extends AbstractGame {
     private final double INITIAL_VELOCITY; // Initial flying velocity for the bird.
 
     private int frameCounter; // Keeps track of the frame.
+    private int pauseFrames;
     private int score; // Keeps track of the score.
     private boolean gameOver; // Indicates if the game is over.
     private boolean gameWin; // Indicates if the game is won.
@@ -56,6 +57,7 @@ public class ShadowFlap extends AbstractGame {
         this.LEVEL0 = new Level0();
         this.LEVEL1 = new Level1();
         this.levelUp = false;
+        this.pauseFrames = 0;
         //this.pipe = new Pipe();
 
     }
@@ -74,13 +76,14 @@ public class ShadowFlap extends AbstractGame {
      */
     @Override
     public void update(Input input) {
+        if (input.wasPressed(Keys.ESCAPE)) {
+            Window.close(); // Closes window if escape is pressed.
+        }
         if (!levelUp) {
             LEVEL0.update(frameCounter);
-            if (input.wasPressed(Keys.ESCAPE)) {
-                Window.close(); // Closes window if escape is pressed.
-            }
+
             if (input.wasPressed(Keys.SPACE)) {
-                LEVEL0.setLevelStarted(true);
+                LEVEL0.setLevelStarted();
             }
             if (!gameOver && !gameWin) {
                 if (LEVEL0.getLevelStarted()) {
@@ -97,7 +100,7 @@ public class ShadowFlap extends AbstractGame {
                             if (score >= LEVEL0.getMaxScore()) {
                                 LEVEL0.setLevelWon();
                             }
-                            LEVEL0.birdPassed();
+                            LEVEL0.updateCurrentPipe();
                             if (LEVEL0.getLevelWon()) {
                                 gameWin = true;
                             }
@@ -110,28 +113,56 @@ public class ShadowFlap extends AbstractGame {
                 LEVEL0.printScore(score);
                 LEVEL0.printCollisionMessage();
             } else if (gameWin) {
-                LEVEL0.setLevelOver();
-                LEVEL0.printLevelUpMessage();
-                LEVEL0.printScore(score);
-                levelUp = true;
-                frameCounter = 0;
-                score = 0;
+                if (pauseFrames <= 20) {
+                    LEVEL0.printLevelUpMessage();
+                    LEVEL0.printScore(score);
+                    pauseFrames++;
+                } else {
+                    LEVEL0.setLevelOver();
+                    levelUp = true;
+                    gameWin = false;
+                    frameCounter = 0;
+                    score = 0;
+                    bird.resetPosition();
+                }
             }
         } else {
             LEVEL1.update(frameCounter);
-            frameCounter++;
-            LEVEL1.printScoreCounter(score);
-            birdActions(input);
-            detectCollision();
-            if (checkCross()) {
-                score++;
-                if (score >= LEVEL1.getMaxScore()) {
-                    LEVEL1.setLevelWon();
+            if (input.wasPressed(Keys.SPACE)) {
+                bird.setLevel1();
+
+                LEVEL1.setLevelStarted();
+            }
+            if (!gameOver && !gameWin) {
+                if (LEVEL1.getLevelStarted()) {
+                    frameCounter++;
+                    LEVEL1.printScoreCounter(score);
+                    birdActions(input);
+                    if (LEVEL1.getPipesInitiated()) {
+                        detectCollision();
+                        if (LEVEL1.getLevelOver()) {
+                            gameOver = true;
+                        }
+                        if (checkCross()) {
+                            score++;
+                            if (score >= LEVEL1.getMaxScore()) {
+                                LEVEL1.setLevelWon();
+                            }
+                            LEVEL1.updateCurrentPipe();
+                            if (LEVEL1.getLevelWon()) {
+                                gameWin = true;
+                            }
+                        }
+                    }
+                } else {
+                    LEVEL1.printInstructionMessage();
+                    LEVEL1.printShootMessage();
                 }
-                LEVEL1.birdPassed();
-                if (LEVEL1.getLevelWon()) {
-                    gameWin = true;
-                }
+            } else if (gameOver && !gameWin) {
+                LEVEL1.printScore(score);
+                LEVEL1.printCollisionMessage();
+            } else if (gameWin) {
+                LEVEL1.printWinMessage();
             }
 
         }
@@ -161,18 +192,25 @@ public class ShadowFlap extends AbstractGame {
             if (bird.getRectangle().intersects(LEVEL0.returnUpperRectangle()) ||
                     bird.getRectangle().intersects(LEVEL0.returnLowerRectangle())) {
                 LEVEL0.loseLife();
+                LEVEL0.updateCurrentPipe();
                 // Indicates game over.
             }
         } else {
             if (bird.getRectangle().intersects(LEVEL1.returnUpperRectangle()) ||
                     bird.getRectangle().intersects(LEVEL1.returnLowerRectangle())) {
                 LEVEL1.loseLife();
+                LEVEL1.updateCurrentPipe();
                 // Indicates game over.
             }
         }
         // Checks if the bird is out of the window.
         if (bird.getRectangle().centre().y < 0 || bird.getRectangle().centre().y > Window.getHeight()) {
-            LEVEL0.setLevelOver(); // Indicates game over.
+            bird.resetPosition();
+            if (!levelUp) {
+                LEVEL0.loseLife();
+            } else {
+                LEVEL1.loseLife();
+            }
         }
     }
 

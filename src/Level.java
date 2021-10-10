@@ -14,6 +14,8 @@ public abstract class Level {
     protected final String SCORE_MESSAGE; // String with score message.
     protected final String LEVEL_UP_MESSAGE;
     protected final String SCORE_COUNTER;
+    protected final String SHOOT_MESSAGE;
+    protected final String WIN_MESSAGE;
 
 
     public Level() {
@@ -27,6 +29,8 @@ public abstract class Level {
         this.SCORE_MESSAGE = "FINAL SCORE ";
         this.LEVEL_UP_MESSAGE = "LEVEL-UP!";
         this.SCORE_COUNTER = "SCORE: ";
+        this.SHOOT_MESSAGE = "PRESS 'S' TO SHOOT";
+        this.WIN_MESSAGE =  "CONGRATULATIONS!";
 
 
     }
@@ -55,9 +59,16 @@ public abstract class Level {
         font.drawString(INSTRUCTION_MESSAGE, getStringCentre(INSTRUCTION_MESSAGE).x, getStringCentre(INSTRUCTION_MESSAGE).y);
     }
 
+    public void printShootMessage() {
+        font.drawString(SHOOT_MESSAGE, getStringCentre(SHOOT_MESSAGE).x, getStringCentre(SHOOT_MESSAGE).y + 68);
+    }
+
     public void printScoreCounter(int score) {
         font.drawString(SCORE_COUNTER + score, 100, 100);
 
+    }
+    public void printWinMessage() {
+        font.drawString(WIN_MESSAGE, getStringCentre(WIN_MESSAGE).x, getStringCentre(WIN_MESSAGE).y);
     }
 
 

@@ -29,12 +29,15 @@ public class PlasticPipe extends Pipe{
 
     }
 
+    public boolean isFlameOn() {
+        return false;
+    }
 
 
-    public void update() {
 
-        PLASTIC_PIPE_IMAGE.drawFromTopLeft(x, y - PLASTIC_PIPE_IMAGE.getHeight());
-        PLASTIC_PIPE_IMAGE.drawFromTopLeft(x, y + PIPE_GAP, new DrawOptions().setRotation(Math.PI));
+    public void update(int frame) {
+
+        super.drawPipes(PLASTIC_PIPE_IMAGE);
 
         x -= stepSize;
     }
