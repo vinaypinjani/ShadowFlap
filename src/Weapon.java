@@ -9,6 +9,7 @@ public abstract class Weapon {
     protected double x;
     protected static double stepSize = 3;
     protected boolean isCollected;
+    protected boolean isShot;
     private final double MAX_Y;
     private final double MIN_Y;
     private final double WEAPON_SIDE;
@@ -22,6 +23,12 @@ public abstract class Weapon {
         MIN_Y = 100;
         WEAPON_SIDE = 32;
         isCollected = false;
+        isShot = false;
+    }
+
+    public void setWeaponShot() {
+        isShot = true;
+
     }
 
     public void setWeaponCollected() {

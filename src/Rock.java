@@ -13,6 +13,8 @@ public class Rock extends Weapon{
         super.drawWeapon(ROCK_IMAGE);
         if (!isCollected) {
             x -= stepSize;
+        } else if (isShot) {
+            x += 5;
         }
     }
 }

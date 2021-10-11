@@ -111,7 +111,7 @@ public class Bird {
         y = INITIAL_Y;
     }
 
-    public void setWeaponCollected() {weaponCollected = true;}
+    public void setWeaponCollected(boolean collected) {weaponCollected = collected;}
     public boolean getWeaponCollected() {
         return weaponCollected;
 

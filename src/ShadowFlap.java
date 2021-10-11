@@ -138,10 +138,16 @@ public class ShadowFlap extends AbstractGame {
                     frameCounter++;
                     LEVEL1.printScoreCounter(score);
                     birdActions(input);
-                    if (LEVEL1.getPipesInitiated() && LEVEL1.getWeaponsInitiated()) {
+                    if (LEVEL1.getPipesInitiated()) {
                         detectCollision();
-                        collectWeapon();
-                        updateNextWeapon();
+                        if (LEVEL1.getWeaponsInitiated()) {
+                            collectWeapon();
+                            if (input.wasPressed(Keys.S) && bird.getWeaponCollected()) {
+                                LEVEL1.shootWeapon();
+                                bird.setWeaponCollected(false);
+                            }
+                        }
+
                         if (LEVEL1.getLevelOver()) {
                             gameOver = true;
                         }
@@ -221,13 +227,17 @@ public class ShadowFlap extends AbstractGame {
     public void collectWeapon() {
         if (!bird.getWeaponCollected()) {
             if (LEVEL1.returnWeaponRectangle().intersects(bird.getRectangle())) {
-                bird.setWeaponCollected();
+                bird.setWeaponCollected(true);
+                LEVEL1.setWeaponCollected();
+                LEVEL1.updateCurrentWeapon();
             }
         } else {
-            LEVEL1.setWeaponCoordinates(bird.getRectangle().topRight().x,bird.getRectangle().topRight().y);
+            LEVEL1.setWeaponCoordinates(bird.getRectangle().topRight().x, bird.getRectangle().topRight().y);
+        }
+        if (checkNextWeapon()) {
+            LEVEL1.updateCurrentWeapon();
         }
     }
-
 
 
     public boolean checkCross() {
@@ -238,12 +248,9 @@ public class ShadowFlap extends AbstractGame {
         }
     }
 
-    public void updateNextWeapon() {
-        if (!bird.getWeaponCollected()) {
-            if (bird.getRectangle().centre().x > LEVEL1.returnWeaponRectangle().right()) {
-                LEVEL1.updateCurrentWeapon();
-            }
-        }
+    public boolean checkNextWeapon() {
+        return (bird.getRectangle().centre().x > LEVEL1.returnWeaponRectangle().centre().x);
+
     }
 
 

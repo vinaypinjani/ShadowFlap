@@ -13,7 +13,9 @@ public class Bomb extends Weapon{
         super.drawWeapon(BOMB_IMAGE);
         if (!isCollected) {
             x -= stepSize;
-        }
+        } else if (isShot) {
+        x += 5;
+    }
 
     }
 }

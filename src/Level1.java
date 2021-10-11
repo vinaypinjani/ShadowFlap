@@ -12,7 +12,7 @@ public class Level1 extends Level {
     private boolean levelWon; // Indicates if the level is won
     private ArrayList<Pipe> pipes;
     private ArrayList<Weapon> weapons;
-    private int currPipe;
+
     private int numPipes;
     private boolean pipesInitiated;
     private boolean levelStarted;
@@ -21,6 +21,8 @@ public class Level1 extends Level {
     private int numWeapons;
     private int currentWeapon;
     private boolean weaponsInitiated;
+    private int pickedWeapon;
+    private int nextWeapon;
 
 
 
@@ -32,13 +34,14 @@ public class Level1 extends Level {
         levelWon = false;
         pipes = new ArrayList<Pipe>();
         weapons = new ArrayList<Weapon>();
-        currPipe = 0;
         levelStarted = false;
         levelOver = false;
         this.currentPipe = 0;
         this.numWeapons = 0;
         this.currentWeapon=0;
         this.weaponsInitiated = false;
+        this.pickedWeapon = 0;
+        this.nextWeapon = 1;
 
     }
     public boolean getPipesInitiated() {
@@ -81,11 +84,21 @@ public class Level1 extends Level {
     }
 
     public void setWeaponCoordinates(double xBird, double yBird) {
-        weapons.get(currentWeapon).setPos(xBird, yBird);
+        weapons.get(pickedWeapon).setPos(xBird, yBird);
     }
 
     public void updateCurrentWeapon() {
+
+
+        if (currentWeapon < numWeapons - 1) {
         currentWeapon++;
+        } else {
+            currentWeapon = numWeapons - 1;
+        }
+    }
+
+    public void shootWeapon() {
+        weapons.get(pickedWeapon).setWeaponShot();
     }
 
     public void collide() {
@@ -104,6 +117,12 @@ public class Level1 extends Level {
         } else {
             levelOver = true;
         }
+    }
+
+    public void setWeaponCollected() {
+        pickedWeapon = currentWeapon;
+        weapons.get(pickedWeapon).setWeaponCollected();
+
     }
 
     public boolean getLevelOver() {
@@ -148,17 +167,19 @@ public class Level1 extends Level {
                     } else {
                         weapons.add(new Bomb());
                     }
-                    numWeapons++;
                     weaponsInitiated = true;
+                    numWeapons++;
+
                 }
             }
 
-            for (int i = 0; i < numWeapons; i++ ) {
-                this.weapons.get(i).update();
-            }
+
 
             for (int i = 0; i < numPipes; i++) {
                 this.pipes.get(i).update(frame);
+            }
+            for (int i = 0; i < numWeapons; i++ ) {
+                this.weapons.get(i).update();
             }
             drawHearts(MAX_LIVES, currLives);
             if (levelWon) {
