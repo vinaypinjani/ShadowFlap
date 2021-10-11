@@ -35,21 +35,19 @@ public class Level0 extends Level {
 
 
 
-    public void loseLife() {
+    public void collide() {
         if (currLives > 1) {
             currLives--;
             plasticPipes.remove(currentPipe);
             numPipes--;
-
         } else {
             levelOver = true;
         }
     }
 
-    public void outOfWindow() {
+    public void loseLife() {
         if (currLives > 1) {
             currLives--;
-
         } else {
             levelOver = true;
         }

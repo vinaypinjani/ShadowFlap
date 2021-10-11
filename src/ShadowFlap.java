@@ -138,8 +138,10 @@ public class ShadowFlap extends AbstractGame {
                     frameCounter++;
                     LEVEL1.printScoreCounter(score);
                     birdActions(input);
-                    if (LEVEL1.getPipesInitiated()) {
+                    if (LEVEL1.getPipesInitiated() && LEVEL1.getWeaponsInitiated()) {
                         detectCollision();
+                        collectWeapon();
+                        updateNextWeapon();
                         if (LEVEL1.getLevelOver()) {
                             gameOver = true;
                         }
@@ -193,14 +195,14 @@ public class ShadowFlap extends AbstractGame {
             // Checks if the bounding box for both objects intersect.
             if (bird.getRectangle().intersects(LEVEL0.returnUpperRectangle()) ||
                     bird.getRectangle().intersects(LEVEL0.returnLowerRectangle())) {
-                LEVEL0.loseLife();
+                LEVEL0.collide();
                 //LEVEL0.updateCurrentPipe();
                 // Indicates game over.
             }
         } else {
             if (bird.getRectangle().intersects(LEVEL1.returnUpperRectangle()) ||
                     bird.getRectangle().intersects(LEVEL1.returnLowerRectangle())) {
-                LEVEL1.loseLife();
+                LEVEL1.collide();
                 //LEVEL1.updateCurrentPipe();
                 // Indicates game over.
             }
@@ -209,18 +211,38 @@ public class ShadowFlap extends AbstractGame {
         if (bird.getRectangle().centre().y < 0 || bird.getRectangle().centre().y > Window.getHeight()) {
             bird.resetPosition();
             if (!levelUp) {
-                LEVEL0.outOfWindow();
+                LEVEL0.loseLife();
             } else {
-                LEVEL1.outOfWindow();
+                LEVEL1.loseLife();
             }
         }
     }
+
+    public void collectWeapon() {
+        if (!bird.getWeaponCollected()) {
+            if (LEVEL1.returnWeaponRectangle().intersects(bird.getRectangle())) {
+                bird.setWeaponCollected();
+            }
+        } else {
+            LEVEL1.setWeaponCoordinates(bird.getRectangle().topRight().x,bird.getRectangle().topRight().y);
+        }
+    }
+
+
 
     public boolean checkCross() {
         if (!levelUp) {
             return (bird.getRectangle().centre().x > LEVEL0.returnUpperRectangle().right());
         } else {
             return (bird.getRectangle().centre().x > LEVEL1.returnUpperRectangle().right());
+        }
+    }
+
+    public void updateNextWeapon() {
+        if (!bird.getWeaponCollected()) {
+            if (bird.getRectangle().centre().x > LEVEL1.returnWeaponRectangle().right()) {
+                LEVEL1.updateCurrentWeapon();
+            }
         }
     }
 

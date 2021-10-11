@@ -11,6 +11,8 @@ public class Rock extends Weapon{
     public void update() {
 
         super.drawWeapon(ROCK_IMAGE);
-        x -= stepSize;
+        if (!isCollected) {
+            x -= stepSize;
+        }
     }
 }

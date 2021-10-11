@@ -19,7 +19,8 @@ public class Level1 extends Level {
     private boolean levelOver;
     private int currentPipe;
     private int numWeapons;
-    private int currentWeapons;
+    private int currentWeapon;
+    private boolean weaponsInitiated;
 
 
 
@@ -36,11 +37,16 @@ public class Level1 extends Level {
         levelOver = false;
         this.currentPipe = 0;
         this.numWeapons = 0;
-        this.currentWeapons=0;
+        this.currentWeapon=0;
+        this.weaponsInitiated = false;
 
     }
     public boolean getPipesInitiated() {
         return pipesInitiated;
+    }
+
+    public boolean getWeaponsInitiated() {
+        return weaponsInitiated;
     }
 
     public boolean getLevelStarted() {
@@ -70,8 +76,19 @@ public class Level1 extends Level {
         }
     }
 
+    public Rectangle returnWeaponRectangle() {
+        return weapons.get(currentWeapon).getBoundingBox();
+    }
 
-    public void loseLife() {
+    public void setWeaponCoordinates(double xBird, double yBird) {
+        weapons.get(currentWeapon).setPos(xBird, yBird);
+    }
+
+    public void updateCurrentWeapon() {
+        currentWeapon++;
+    }
+
+    public void collide() {
         if (currLives > 1) {
             currLives--;
             pipes.remove(currentPipe);
@@ -81,10 +98,9 @@ public class Level1 extends Level {
         }
     }
 
-    public void outOfWindow() {
+    public void loseLife() {
         if (currLives > 1) {
             currLives--;
-
         } else {
             levelOver = true;
         }
@@ -133,6 +149,7 @@ public class Level1 extends Level {
                         weapons.add(new Bomb());
                     }
                     numWeapons++;
+                    weaponsInitiated = true;
                 }
             }
 

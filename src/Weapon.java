@@ -8,7 +8,7 @@ public abstract class Weapon {
     protected double y;
     protected double x;
     protected static double stepSize = 3;
-
+    protected boolean isCollected;
     private final double MAX_Y;
     private final double MIN_Y;
     private final double WEAPON_SIDE;
@@ -21,7 +21,16 @@ public abstract class Weapon {
         MAX_Y = 500;
         MIN_Y = 100;
         WEAPON_SIDE = 32;
+        isCollected = false;
+    }
 
+    public void setWeaponCollected() {
+        isCollected = true;
+    }
+
+    public void setPos(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 
     public void update() {

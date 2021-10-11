@@ -11,7 +11,9 @@ public class Bomb extends Weapon{
     public void update() {
 
         super.drawWeapon(BOMB_IMAGE);
-        x -= stepSize;
+        if (!isCollected) {
+            x -= stepSize;
+        }
 
     }
 }

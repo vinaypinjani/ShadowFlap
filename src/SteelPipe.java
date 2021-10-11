@@ -5,6 +5,7 @@ import bagel.Window;
 public class SteelPipe extends Pipe{
     private final Image STEEL_PIPE_IMAGE; // Holds the Image for the pipe
     private final Image FLAME_IMAGE;
+    private int flameFrames;
 
 
 
@@ -13,6 +14,7 @@ public class SteelPipe extends Pipe{
         STEEL_PIPE_IMAGE = new Image("res/level-1/steelPipe.png");
         FLAME_IMAGE = new Image("res/level-1/flame.png");
         y = getPipeY();
+        flameFrames = 0;
 
     }
 
@@ -25,7 +27,13 @@ public class SteelPipe extends Pipe{
 
         if (x > 0 || x < Window.getWidth()) {
             if (frame % 20 == 0) {
-                flameOn = !flameOn;
+                flameOn = true;
+            }
+            if (flameFrames < 3) {
+                flameFrames++;
+            } else {
+                flameOn = false;
+                flameFrames = 0;
             }
             if (flameOn) {
                 FLAME_IMAGE.drawFromTopLeft(x, y);

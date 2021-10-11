@@ -20,6 +20,7 @@ public class Bird {
     private double y; // Holds the current y position for the bird.
     private double velocity; // holds the current velocity of the bird.
     private boolean isLevel1;
+    private boolean weaponCollected;
 
     /*
     Constructor initializes all Final values for bird with given values.
@@ -35,6 +36,7 @@ public class Bird {
         this.MAX_VELOCITY = 10;
         this.SPEED = 6.0;
         this.isLevel1 = false;
+        this.weaponCollected = false;
 
         this.y = INITIAL_Y; // Current y position is set as the initial y position.
     }
@@ -98,6 +100,9 @@ public class Bird {
     public double getX() {
         return X;
     }
+    public double getY() {
+        return y;
+    }
     public void setLevel1() {
         isLevel1 = true;
     }
@@ -106,8 +111,11 @@ public class Bird {
         y = INITIAL_Y;
     }
 
+    public void setWeaponCollected() {weaponCollected = true;}
+    public boolean getWeaponCollected() {
+        return weaponCollected;
 
-
+    }
 
 
 
