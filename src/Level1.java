@@ -11,12 +11,15 @@ public class Level1 extends Level {
     private final int MAX_LIVES;
     private boolean levelWon; // Indicates if the level is won
     private ArrayList<Pipe> pipes;
+    private ArrayList<Weapon> weapons;
     private int currPipe;
     private int numPipes;
     private boolean pipesInitiated;
     private boolean levelStarted;
     private boolean levelOver;
     private int currentPipe;
+    private int numWeapons;
+    private int currentWeapons;
 
 
 
@@ -27,10 +30,13 @@ public class Level1 extends Level {
         currLives = 6;
         levelWon = false;
         pipes = new ArrayList<Pipe>();
+        weapons = new ArrayList<Weapon>();
         currPipe = 0;
         levelStarted = false;
         levelOver = false;
         this.currentPipe = 0;
+        this.numWeapons = 0;
+        this.currentWeapons=0;
 
     }
     public boolean getPipesInitiated() {
@@ -66,6 +72,16 @@ public class Level1 extends Level {
 
 
     public void loseLife() {
+        if (currLives > 1) {
+            currLives--;
+            pipes.remove(currentPipe);
+            numPipes--;
+        } else {
+            levelOver = true;
+        }
+    }
+
+    public void outOfWindow() {
         if (currLives > 1) {
             currLives--;
 
@@ -109,6 +125,21 @@ public class Level1 extends Level {
                 pipesInitiated = true;
                 numPipes++;
             }
+            if (frame % 50 == 0 && frame % 100 != 0) {
+                if (new Random().nextBoolean()){
+                    if (new Random().nextBoolean()) {
+                        weapons.add(new Rock());
+                    } else {
+                        weapons.add(new Bomb());
+                    }
+                    numWeapons++;
+                }
+            }
+
+            for (int i = 0; i < numWeapons; i++ ) {
+                this.weapons.get(i).update();
+            }
+
             for (int i = 0; i < numPipes; i++) {
                 this.pipes.get(i).update(frame);
             }

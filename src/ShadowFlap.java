@@ -180,9 +180,11 @@ public class ShadowFlap extends AbstractGame {
         }
         if (input.wasPressed(Keys.L)) {
             Pipe.increaseStepSize();
+            Weapon.increaseStepSize();
         }
         if (input.wasPressed(Keys.K)) {
             Pipe.decreaseStepSize();
+            Weapon.decreaseStepSize();
         }
     }
 
@@ -192,14 +194,14 @@ public class ShadowFlap extends AbstractGame {
             if (bird.getRectangle().intersects(LEVEL0.returnUpperRectangle()) ||
                     bird.getRectangle().intersects(LEVEL0.returnLowerRectangle())) {
                 LEVEL0.loseLife();
-                LEVEL0.updateCurrentPipe();
+                //LEVEL0.updateCurrentPipe();
                 // Indicates game over.
             }
         } else {
             if (bird.getRectangle().intersects(LEVEL1.returnUpperRectangle()) ||
                     bird.getRectangle().intersects(LEVEL1.returnLowerRectangle())) {
                 LEVEL1.loseLife();
-                LEVEL1.updateCurrentPipe();
+                //LEVEL1.updateCurrentPipe();
                 // Indicates game over.
             }
         }
@@ -207,9 +209,9 @@ public class ShadowFlap extends AbstractGame {
         if (bird.getRectangle().centre().y < 0 || bird.getRectangle().centre().y > Window.getHeight()) {
             bird.resetPosition();
             if (!levelUp) {
-                LEVEL0.loseLife();
+                LEVEL0.outOfWindow();
             } else {
-                LEVEL1.loseLife();
+                LEVEL1.outOfWindow();
             }
         }
     }
