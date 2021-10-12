@@ -29,7 +29,7 @@ public class Level1 extends Level {
     public Level1() {
         BACKGROUND_IMAGE = new Image("res/level-1/background.png");
         MAX_SCORE = 30;
-        MAX_LIVES = 100;
+        MAX_LIVES = 6;
         currLives = MAX_LIVES;
         levelWon = false;
         pipes = new ArrayList<Pipe>();
@@ -104,7 +104,9 @@ public class Level1 extends Level {
                 if (weapons.get(shotIndex).isBomb() ||
                         (!weapons.get(shotIndex).isBomb && !pipes.get(currentPipe).isSteel())) {
                     if (!weapons.get(shotIndex).isDestroyed()) {
-                        pipes.get(currentPipe).destroy();
+                        pipes.remove(currentPipe);
+                        numPipes--;
+                        ShadowFlap.incrementScore();
                         weapons.get(shotIndex).setDestroyed();
                     }
 

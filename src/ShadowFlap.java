@@ -28,7 +28,7 @@ public class ShadowFlap extends AbstractGame {
 
     private int frameCounter; // Keeps track of the frame.
     private int pauseFrames;
-    private int score; // Keeps track of the score.
+    private static int score = 0; // Keeps track of the score.
     private boolean gameOver; // Indicates if the game is over.
     private boolean gameWin; // Indicates if the game is won.
     private boolean startGame; // Indicates if the game is started.
@@ -48,7 +48,6 @@ public class ShadowFlap extends AbstractGame {
         this.INITIAL_VELOCITY = -6.0;
 
         this.frameCounter = 0;
-        this.score = 0;
         this.gameOver = false;
         this.gameWin = false;
         this.startGame = false;
@@ -96,7 +95,7 @@ public class ShadowFlap extends AbstractGame {
                             gameOver = true;
                         }
                         if (checkCross()) {
-                            score++;
+                           incrementScore();
                             if (score >= LEVEL0.getMaxScore()) {
                                 LEVEL0.setLevelWon();
                             }
@@ -153,7 +152,7 @@ public class ShadowFlap extends AbstractGame {
                             gameOver = true;
                         }
                         if (checkCross()) {
-                            score++;
+                            incrementScore();
                             if (score >= LEVEL1.getMaxScore()) {
                                 LEVEL1.setLevelWon();
                             }
@@ -254,6 +253,10 @@ public class ShadowFlap extends AbstractGame {
     public boolean checkWeaponCrossed() {
         return (bird.getRectangle().left() > LEVEL1.returnWeaponRectangle().right());
 
+    }
+
+    public static void incrementScore() {
+        score++;
     }
 
 
