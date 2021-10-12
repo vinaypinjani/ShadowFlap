@@ -10,11 +10,14 @@ public abstract class Weapon {
     protected static double stepSize = 3;
     protected boolean isCollected;
     protected boolean isShot;
+    protected boolean isDestroyed;
     private final double MAX_Y;
     private final double MIN_Y;
     private final double WEAPON_SIDE;
     private static final double MAX_STEP = 5;
-    private  static final double MIN_STEP = 1;
+    private static final double MIN_STEP = 1;
+
+    protected boolean isBomb;
 
 
     public Weapon() {
@@ -24,11 +27,30 @@ public abstract class Weapon {
         WEAPON_SIDE = 32;
         isCollected = false;
         isShot = false;
+        isDestroyed = false;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
+    public boolean isBomb() {
+        return isBomb;
+    }
+
+    public void setDestroyed() {
+        isDestroyed = true;
     }
 
     public void setWeaponShot() {
         isShot = true;
-
     }
 
     public void setWeaponCollected() {
@@ -40,16 +62,18 @@ public abstract class Weapon {
         this.y = y;
     }
 
-    public void update() {
+    public void update(int frame) {
 
     }
 
     protected void setWeaponY() {
-        y =  (new Random().nextDouble() * (MAX_Y - MIN_Y)) + MIN_Y;
+        y = (new Random().nextDouble() * (MAX_Y - MIN_Y)) + MIN_Y;
     }
 
     protected void drawWeapon(Image image) {
-        image.drawFromTopLeft(x, y);
+        if (!isDestroyed) {
+            image.drawFromTopLeft(x, y);
+        }
     }
 
     public Rectangle getBoundingBox() {
@@ -57,20 +81,18 @@ public abstract class Weapon {
     }
 
     public static void increaseStepSize() {
-        double newSize = stepSize + (stepSize*0.5);
+        double newSize = stepSize + (stepSize * 0.5);
         if (newSize < MAX_STEP) {
             stepSize = newSize;
         }
     }
 
     public static void decreaseStepSize() {
-        double newSize = stepSize - (stepSize*0.5);
+        double newSize = stepSize - (stepSize * 0.5);
         if (newSize > MIN_STEP) {
             stepSize = newSize;
         }
     }
-
-
 
 
 }

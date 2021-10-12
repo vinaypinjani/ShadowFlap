@@ -113,7 +113,7 @@ public class ShadowFlap extends AbstractGame {
                 LEVEL0.printScore(score);
                 LEVEL0.printCollisionMessage();
             } else if (gameWin) {
-                if (pauseFrames <= 20) {
+                if (pauseFrames <= 150) {
                     LEVEL0.printLevelUpMessage();
                     LEVEL0.printScore(score);
                     pauseFrames++;
@@ -146,6 +146,7 @@ public class ShadowFlap extends AbstractGame {
                                 LEVEL1.shootWeapon();
                                 bird.setWeaponCollected(false);
                             }
+                            LEVEL1.trackShot();
                         }
 
                         if (LEVEL1.getLevelOver()) {
@@ -225,6 +226,9 @@ public class ShadowFlap extends AbstractGame {
     }
 
     public void collectWeapon() {
+        if (checkWeaponCrossed()) {
+            LEVEL1.updateCurrentWeapon();
+        }
         if (!bird.getWeaponCollected()) {
             if (LEVEL1.returnWeaponRectangle().intersects(bird.getRectangle())) {
                 bird.setWeaponCollected(true);
@@ -234,9 +238,8 @@ public class ShadowFlap extends AbstractGame {
         } else {
             LEVEL1.setWeaponCoordinates(bird.getRectangle().topRight().x, bird.getRectangle().topRight().y);
         }
-        if (checkNextWeapon()) {
-            LEVEL1.updateCurrentWeapon();
-        }
+
+
     }
 
 
@@ -248,8 +251,8 @@ public class ShadowFlap extends AbstractGame {
         }
     }
 
-    public boolean checkNextWeapon() {
-        return (bird.getRectangle().centre().x > LEVEL1.returnWeaponRectangle().centre().x);
+    public boolean checkWeaponCrossed() {
+        return (bird.getRectangle().left() > LEVEL1.returnWeaponRectangle().right());
 
     }
 

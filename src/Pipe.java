@@ -19,7 +19,9 @@ public abstract class Pipe {
     private final double PIPE_WIDTH;
     private final double PIPE_HEIGHT;
     private final double FLAME_HEIGHT;
+    protected boolean isSteel;
 
+    protected boolean isDestroyed;
     protected boolean flameOn;
 
 
@@ -31,15 +33,25 @@ public abstract class Pipe {
         x = INITIAL_X;
         PIPE_WIDTH = 65;
         PIPE_HEIGHT = 768;
+        this.isDestroyed = false;
 
         this.FLAME_HEIGHT = 39;
         flameOn = false;
 
     }
+
+    public boolean isSteel() {
+        return isSteel;
+    }
+
     public abstract boolean isFlameOn();
 
     protected double getPipeY() {
         return (new Random().nextDouble() * (LOW_GAP - HIGH_GAP)) + HIGH_GAP;
+    }
+
+    public void destroy() {
+        isDestroyed = true;
     }
 
 
@@ -47,22 +59,24 @@ public abstract class Pipe {
     }
 
     public static void increaseStepSize() {
-       double newSize = stepSize + (stepSize*0.5);
-       if (newSize < MAX_STEP) {
-           stepSize = newSize;
-       }
+        double newSize = stepSize + (stepSize * 0.5);
+        if (newSize < MAX_STEP) {
+            stepSize = newSize;
+        }
     }
 
     public static void decreaseStepSize() {
-        double newSize = stepSize - (stepSize*0.5);
+        double newSize = stepSize - (stepSize * 0.5);
         if (newSize > MIN_STEP) {
             stepSize = newSize;
         }
     }
 
     public void drawPipes(Image image) {
-        image.drawFromTopLeft(x, y - PIPE_HEIGHT);
-        image.drawFromTopLeft(x, y + PIPE_GAP, new DrawOptions().setRotation(Math.PI));
+        if (!isDestroyed) {
+            image.drawFromTopLeft(x, y - PIPE_HEIGHT);
+            image.drawFromTopLeft(x, y + PIPE_GAP, new DrawOptions().setRotation(Math.PI));
+        }
     }
 
     /*

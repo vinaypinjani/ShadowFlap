@@ -1,21 +1,28 @@
 import bagel.Image;
 
-public class Bomb extends Weapon{
+public class Bomb extends Weapon {
     private final Image BOMB_IMAGE;
+    private final double RANGE;
+    private int lastFrame;
 
     public Bomb() {
         BOMB_IMAGE = new Image("res/level-1/bomb.png");
         super.setWeaponY();
+        RANGE = 50;
+        isBomb = true;
+
     }
 
-    public void update() {
-
+    public void update(int frame) {
         super.drawWeapon(BOMB_IMAGE);
-        if (!isCollected) {
+        if (!isShot) {
             x -= stepSize;
-        } else if (isShot) {
-        x += 5;
-    }
+            lastFrame = frame;
+        } else if (frame - lastFrame <= RANGE) {
+            x += 5;
+        } else {
+            isDestroyed = true;
+        }
 
     }
 }

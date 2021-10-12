@@ -15,6 +15,7 @@ public class SteelPipe extends Pipe{
         FLAME_IMAGE = new Image("res/level-1/flame.png");
         y = getPipeY();
         flameFrames = 0;
+        isSteel = true;
 
     }
 
@@ -35,7 +36,7 @@ public class SteelPipe extends Pipe{
                 flameOn = false;
                 flameFrames = 0;
             }
-            if (flameOn) {
+            if (flameOn && !isDestroyed) {
                 FLAME_IMAGE.drawFromTopLeft(x, y);
                 FLAME_IMAGE.drawFromTopLeft(x, y + PIPE_GAP - FLAME_IMAGE.getHeight(), new DrawOptions().setRotation(Math.PI));
             }

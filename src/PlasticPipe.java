@@ -27,6 +27,8 @@ public class PlasticPipe extends Pipe{
             y = getPipeY();
         }
 
+        isSteel = false;
+
     }
 
     public boolean isFlameOn() {
