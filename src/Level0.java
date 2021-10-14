@@ -30,6 +30,7 @@ public class Level0 extends Level {
 
     /**
      * Update method is called every frame and generates new pipes and updates the state of those pipes.
+     *
      * @param frame contains the current frame of the leve.
      */
     public void update(int frame) {
@@ -46,8 +47,10 @@ public class Level0 extends Level {
             }
 
             // updates the state of all pipes made.
-            for (int i = 0; i < numPipes; i++) {
-                this.pipes.get(i).update(frame);
+            if (pipesInitiated) {
+                for (int i = 0; i < numPipes; i++) {
+                    pipes.get(i).update(frame);
+                }
             }
 
             // draws the life bar that is updated constantly,
