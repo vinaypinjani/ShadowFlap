@@ -2,6 +2,9 @@ import bagel.Font;
 import bagel.Image;
 import bagel.util.Point;
 import bagel.Window;
+import bagel.util.Rectangle;
+
+import java.util.ArrayList;
 
 public abstract class Level {
     private final Image EMPTY_HEART;
@@ -16,6 +19,15 @@ public abstract class Level {
     protected final String SCORE_COUNTER;
     protected final String SHOOT_MESSAGE;
     protected final String WIN_MESSAGE;
+    protected ArrayList<Pipe> pipes;
+
+    protected int currLives;
+    protected boolean pipesInitiated;
+    protected int currentPipe;
+    protected int numPipes;
+    protected boolean levelStarted;
+    protected boolean levelOver;
+    protected boolean levelWon; // Indicates if the level is won
 
 
     public Level() {
@@ -31,10 +43,68 @@ public abstract class Level {
         this.SCORE_COUNTER = "SCORE: ";
         this.SHOOT_MESSAGE = "PRESS 'S' TO SHOOT";
         this.WIN_MESSAGE =  "CONGRATULATIONS!";
-
+        this.pipes = new ArrayList<Pipe>();
+        this.pipesInitiated = false;
+        this.currentPipe = 0;
+        this.numPipes = 0;
+        this.levelWon = false;
+        this.levelStarted = false;
+        this.levelOver = false;
 
     }
 
+    public void collide() {
+        if (currLives > 1) {
+            currLives--;
+            pipes.remove(currentPipe);
+            numPipes--;
+        } else {
+            levelOver = true;
+        }
+    }
+
+    public void loseLife() {
+        if (currLives > 1) {
+            currLives--;
+        } else {
+            levelOver = true;
+        }
+    }
+    public boolean getPipesInitiated() {
+        return pipesInitiated;
+    }
+
+    public boolean getLevelStarted() {
+        return levelStarted;
+    }
+
+    public void setLevelStarted() {
+        levelStarted = true;
+    }
+
+    public boolean getLevelOver() {
+        return levelOver;
+    }
+
+    public void updateCurrentPipe() {
+        currentPipe++;
+    }
+
+    public void setLevelWon() {
+        levelWon = true;
+    }
+
+    public boolean getLevelWon() {
+        return levelWon;
+    }
+
+    public void setLevelOver() {
+        levelOver = true;
+    }
+
+    public boolean isLevelOver() {
+        return levelOver;
+    }
 
     public Point getStringCentre(String string) {
         double x = WINDOW_CENTRE.x - (font.getWidth(string) / 2); // Gets the x coordinate for message.
@@ -87,8 +157,19 @@ public abstract class Level {
         }
     }
 
+    public Rectangle returnUpperRectangle() {
+        if (!pipes.get(currentPipe).isFlameOn()) {
+            return pipes.get(currentPipe).getUpperRectangle();
+        } else {
+            return pipes.get(currentPipe).getFlameUpperRectangle();
+        }
+    }
 
-
-
-
+    public Rectangle returnLowerRectangle() {
+        if (!pipes.get(currentPipe).isFlameOn()) {
+            return pipes.get(currentPipe).getLowerRectangle();
+        } else {
+            return pipes.get(currentPipe).getFlameLowerRectangle();
+        }
+    }
 }

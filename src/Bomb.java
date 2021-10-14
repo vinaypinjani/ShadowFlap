@@ -10,9 +10,9 @@ public class Bomb extends Weapon {
         super.setWeaponY();
         RANGE = 50;
         isBomb = true;
-
     }
 
+    @Override
     public void update(int frame) {
         super.drawWeapon(BOMB_IMAGE);
         if (!isShot) {

@@ -16,7 +16,6 @@ public abstract class Weapon {
     private final double WEAPON_SIDE;
     private static final double MAX_STEP = 5;
     private static final double MIN_STEP = 1;
-
     protected boolean isBomb;
 
 
@@ -62,9 +61,7 @@ public abstract class Weapon {
         this.y = y;
     }
 
-    public void update(int frame) {
-
-    }
+    public void update(int frame) {}
 
     protected void setWeaponY() {
         y = (new Random().nextDouble() * (MAX_Y - MIN_Y)) + MIN_Y;
@@ -93,6 +90,4 @@ public abstract class Weapon {
             stepSize = newSize;
         }
     }
-
-
 }

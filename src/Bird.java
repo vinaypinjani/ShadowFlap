@@ -97,12 +97,6 @@ public class Bird {
         }
     }
 
-    public double getX() {
-        return X;
-    }
-    public double getY() {
-        return y;
-    }
     public void setLevel1() {
         isLevel1 = true;
     }

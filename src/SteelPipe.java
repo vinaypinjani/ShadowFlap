@@ -7,16 +7,12 @@ public class SteelPipe extends Pipe{
     private final Image FLAME_IMAGE;
     private int flameFrames;
 
-
-
-
     public SteelPipe() {
         STEEL_PIPE_IMAGE = new Image("res/level-1/steelPipe.png");
         FLAME_IMAGE = new Image("res/level-1/flame.png");
         y = getPipeY();
         flameFrames = 0;
         isSteel = true;
-
     }
 
     public boolean isFlameOn() {
@@ -25,7 +21,6 @@ public class SteelPipe extends Pipe{
 
     @Override
     public void update(int frame) {
-
         if (x > 0 || x < Window.getWidth()) {
             if (frame % 20 == 0) {
                 flameOn = true;
@@ -41,9 +36,7 @@ public class SteelPipe extends Pipe{
                 FLAME_IMAGE.drawFromTopLeft(x, y + PIPE_GAP - FLAME_IMAGE.getHeight(), new DrawOptions().setRotation(Math.PI));
             }
         }
-
         super.drawPipes(STEEL_PIPE_IMAGE);
-
         x -= stepSize;
     }
 }

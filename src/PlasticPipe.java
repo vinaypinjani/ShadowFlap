@@ -1,9 +1,4 @@
-import bagel.DrawOptions;
 import bagel.Image;
-import bagel.Window;
-import bagel.util.Rectangle;
-
-
 import java.util.Random;
 
 public class PlasticPipe extends Pipe{
@@ -13,38 +8,24 @@ public class PlasticPipe extends Pipe{
      // Initial x coordinate for the pipe.
     private final double[] PIPE_HEIGHTS_L0;
 
-
-
-
     public PlasticPipe(boolean isLevel1) {
         this.PLASTIC_PIPE_IMAGE = new Image("res/level/plasticPipe.png");
         MID_GAP = 300;
-
         PIPE_HEIGHTS_L0 = new double[]{HIGH_GAP, MID_GAP, LOW_GAP};
         if (!isLevel1) {
             y = PIPE_HEIGHTS_L0[new Random().nextInt(PIPE_HEIGHTS_L0.length)];
         } else {
             y = getPipeY();
         }
-
         isSteel = false;
-
     }
 
     public boolean isFlameOn() {
         return false;
     }
 
-
-
     public void update(int frame) {
-
         super.drawPipes(PLASTIC_PIPE_IMAGE);
-
         x -= stepSize;
     }
-
-
-
-
 }

@@ -1,7 +1,7 @@
 import bagel.DrawOptions;
 import bagel.Image;
 import bagel.Window;
-import bagel.util.Point;
+
 import bagel.util.Rectangle;
 
 import java.util.Random;
@@ -16,6 +16,7 @@ public abstract class Pipe {
     protected static double stepSize = 3;
     protected static final double MAX_STEP = 5;
     protected static final double MIN_STEP = 1;
+    public static final double INITIAL_STEP_SIZE = 3;
     private final double PIPE_WIDTH;
     private final double PIPE_HEIGHT;
     private final double FLAME_HEIGHT;
@@ -66,6 +67,10 @@ public abstract class Pipe {
         }
     }
 
+    public static void resetStepSize() {
+        stepSize = INITIAL_STEP_SIZE;
+    }
+
     public void drawPipes(Image image) {
         image.drawFromTopLeft(x, y - PIPE_HEIGHT);
         image.drawFromTopLeft(x, y + PIPE_GAP, new DrawOptions().setRotation(Math.PI));
@@ -93,6 +98,4 @@ public abstract class Pipe {
     public Rectangle getFlameLowerRectangle() {
         return new Rectangle(x, y + PIPE_GAP - FLAME_HEIGHT, PIPE_WIDTH, PIPE_HEIGHT + FLAME_HEIGHT);
     }
-
-
 }

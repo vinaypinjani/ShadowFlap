@@ -10,9 +10,9 @@ public class Rock extends Weapon{
         super.setWeaponY();
         RANGE = 25;
         isBomb = false;
-
     }
 
+    @Override
     public void update(int frame) {
 
         super.drawWeapon(ROCK_IMAGE);
