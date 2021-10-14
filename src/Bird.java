@@ -3,14 +3,15 @@ import bagel.util.Point;
 import bagel.util.Rectangle;
 
 
+/**
+ * Bird class contains all the attributes and methods for the bird object in the game. It also implements birds
+ * flying and falling features.
+ */
 public class Bird {
-    /*
-   Final Variables for the Bird Class.
-   */
-    private final Image BIRD_DOWN_L0; // Loads bird wing down image.
-    private final Image BIRD_UP_L0; // Loads bird wing up image.
-    private final Image BIRD_DOWN_L1;
-    private final Image BIRD_UP_L1;
+    private final Image BIRD_DOWN_L0; // Loads bird wing down image for level 0.
+    private final Image BIRD_UP_L0; // Loads bird wing up image for level0.
+    private final Image BIRD_DOWN_L1; // Loads bird wing down image for level 1.
+    private final Image BIRD_UP_L1; // Loads bird wing up image for level 1.
     private final double X; // The X value for constant throughout the game.
     private final double INITIAL_Y; // The Y value for the bird at spawn.
     private final double ACCELERATION; // The downward acceleration for the bird.
@@ -19,12 +20,12 @@ public class Bird {
 
     private double y; // Holds the current y position for the bird.
     private double velocity; // holds the current velocity of the bird.
-    private boolean isLevel1;
-    private boolean weaponCollected;
+    private boolean isLevel1; // indicates if level 1 is started
+    private boolean weaponCollected; // indicates if weapon is collected
 
-    /*
-    Constructor initializes all Final values for bird with given values.
-    */
+    /**
+     * Constructor initializes all Final values for bird with given values.
+     */
     public Bird() {
         this.BIRD_DOWN_L0 = new Image("res/level-0/birdWingDown.png");
         this.BIRD_UP_L0 = new Image("res/level-0/birdWingUp.png");
@@ -37,29 +38,30 @@ public class Bird {
         this.SPEED = 6.0;
         this.isLevel1 = false;
         this.weaponCollected = false;
-
         this.y = INITIAL_Y; // Current y position is set as the initial y position.
     }
 
-    /*
-    Setter sets the velocity for the bird.
-    */
+    /**
+     * Setter sets the velocity for the bird.
+     *
+     * @param velocity receives the velocity to be updated to
+     */
     public void setVelocity(double velocity) {
         this.velocity = velocity;
     }
 
-    /*
-  Fly method implements the flying characteristics for the bird
-  */
+    /**
+     * Fly method implements the flying characteristics for the bird
+     */
     public void fly() {
         velocity = -SPEED; // Velocity is set as the given speed but in the opposite direction as the bird is moving up.
         y += velocity; // y value incremented by the velocity per frame.
 
     }
 
-    /*
-   Fall method implements the falling characteristics for the bird.
-   */
+    /**
+     * Fall method implements the falling characteristics for the bird.
+     */
     public void fall() {
         // Checks if the current velocity is under the limit.
         if (velocity < MAX_VELOCITY) {
@@ -70,48 +72,62 @@ public class Bird {
 
     }
 
-    /* Rectangle method returns the current bounding box for the bird.*/
+    /**
+     * Rectangle method returns the current bounding box for the bird.
+     */
     public Rectangle getRectangle() {
         return BIRD_UP_L0.getBoundingBoxAt(new Point(X, y)); // Takes in the current coordinates for the bird.
     }
 
-    /*
-    Flap method takes a boolean flag as input and draws the bird at the current coordinates.
+    /**
+     * Flap method takes a boolean flag as input and draws the bird at the current coordinates.
+     *
+     * @param wingDown indicates whether bird wing is down
      */
     public void flap(boolean wingDown) {
         if (wingDown) {
             if (!isLevel1) {
                 BIRD_DOWN_L0.draw(X, y); // Draws bird with wings down.
-            }
-            else {
+            } else {
                 BIRD_DOWN_L1.draw(X, y);
             }
         } else {
             if (!isLevel1) {
                 BIRD_UP_L0.draw(X, y); // Draws bird with wings up.
-            }
-            else {
+            } else {
                 BIRD_UP_L1.draw(X, y);
             }
 
         }
     }
 
+    /**
+     * sets the game state to level 1
+     */
     public void setLevel1() {
         isLevel1 = true;
     }
 
+    /**
+     * resets the bird to initial y position
+     */
     public void resetPosition() {
         y = INITIAL_Y;
     }
 
-    public void setWeaponCollected(boolean collected) {weaponCollected = collected;}
-    public boolean getWeaponCollected() {
-        return weaponCollected;
-
+    /**
+     * Methods sets the attribute to true or false
+     *
+     * @param collected has the state of the bird
+     */
+    public void setWeaponCollected(boolean collected) {
+        weaponCollected = collected;
     }
 
-
-
-
+    /**
+     * @return whether the bird has a weapon or not.
+     */
+    public boolean getWeaponCollected() {
+        return weaponCollected;
+    }
 }
