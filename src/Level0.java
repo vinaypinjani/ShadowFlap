@@ -15,7 +15,7 @@ public class Level0 extends Level {
      */
     public Level0() {
         this.BACKGROUND_IMAGE = new Image("res/level-0/background.png");
-        this.MAX_SCORE = 1;
+        this.MAX_SCORE = 10;
         this.MAX_LIVES = 3;
         currLives = MAX_LIVES; // Initializes initial lives with max lives
     }
