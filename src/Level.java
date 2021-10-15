@@ -51,7 +51,7 @@ public abstract class Level {
         this.SCORE_COUNTER = "SCORE: ";
         this.SHOOT_MESSAGE = "PRESS 'S' TO SHOOT";
         this.WIN_MESSAGE = "CONGRATULATIONS!";
-        this.pipes = new ArrayList<Pipe>();
+        this.pipes = new ArrayList<>();
         this.pipesInitiated = false;
         this.currentPipe = 0;
         this.numPipes = 0;

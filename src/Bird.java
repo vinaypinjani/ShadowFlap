@@ -22,6 +22,7 @@ public class Bird {
     private double velocity; // holds the current velocity of the bird.
     private boolean isLevel1; // indicates if level 1 is started
     private boolean weaponCollected; // indicates if weapon is collected
+    private boolean weaponShot; // indicates if bird has shot a weapon
 
     /**
      * Constructor initializes all Final values for bird with given values.
@@ -129,5 +130,19 @@ public class Bird {
      */
     public boolean getWeaponCollected() {
         return weaponCollected;
+    }
+
+    /**
+     * @param state indicates whether a weapon is shot or not
+     */
+    public void setWeaponShot(boolean state) {
+        weaponShot = state;
+    }
+
+    /**
+     * @return returns the state of weapon shot.
+     */
+    public boolean getWeaponShot() {
+        return weaponShot;
     }
 }

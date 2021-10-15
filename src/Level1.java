@@ -24,11 +24,11 @@ public class Level1 extends Level {
      * Constructor initializes variables and finals with the initial values.
      */
     public Level1() {
-        BACKGROUND_IMAGE = new Image("res/level-1/background.png");
-        MAX_SCORE = 30;
-        MAX_LIVES = 6;
+        this.BACKGROUND_IMAGE = new Image("res/level-1/background.png");
+        this.MAX_SCORE = 30;
+        this.MAX_LIVES = 6;
         currLives = MAX_LIVES; // Max available lives at start of level.
-        weapons = new ArrayList<Weapon>();
+        weapons = new ArrayList<>();
         this.weaponsInitiated = false;
         this.currentWeapon = 0;
         this.numWeapons = 0;
@@ -73,7 +73,6 @@ public class Level1 extends Level {
         pickedWeapon = currentWeapon;
 
 
-
     }
 
     /**
@@ -90,33 +89,31 @@ public class Level1 extends Level {
     public void shootWeapon() {
         shotIndex = pickedWeapon;
         weapons.get(shotIndex).setWeaponShot();
+
     }
+
 
     /**
      * Method tracks a weapon after it has been shot by the bird. It checks for collisions with the pipes/
      */
     public void trackShot() {
 
-        // Checks if weapons x is ahead of pipe's x
-        if (weapons.get(shotIndex).getBoundingBox().right() >= pipes.get(currentPipe).getUpperRectangle().left()) {
+        // Checks if weapons intersects with pipes
+        if (weapons.get(shotIndex).getBoundingBox().intersects(pipes.get(currentPipe).getUpperRectangle()) ||
+                (weapons.get(shotIndex).getBoundingBox().intersects(pipes.get(currentPipe).getLowerRectangle()))) {
 
-            // Checks if the weapons y value is not in the gap between the pipes.
-            if (weapons.get(shotIndex).getBoundingBox().top() <= pipes.get(currentPipe).getUpperRectangle().bottom() ||
-                    weapons.get(shotIndex).getBoundingBox().bottom() >= pipes.get(currentPipe).getLowerRectangle().top()) {
-
-                // Checks if the weapon is capable of destroying the pipe
-                if (weapons.get(shotIndex).isBomb() ||
-                        (!weapons.get(shotIndex).isBomb && !pipes.get(currentPipe).isSteel())) {
-                    // checks if weapon is not already destroyed
-                    if (!weapons.get(shotIndex).isDestroyed()) {
-                        pipes.remove(currentPipe); // removes the pipe on impact
-                        numPipes--; // decrements num pipes
-                        ShadowFlap.incrementScore(); //  increases the score
-                        weapons.get(shotIndex).setDestroyed(); // destroys the weapon after impact
-                    }
-                } else if (!weapons.get(shotIndex).isDestroyed()) {
-                    weapons.get(shotIndex).setDestroyed(); // destroys the weapon if not compatible
+            // Checks if the weapon is capable of destroying the pipe
+            if (weapons.get(shotIndex).isBomb() ||
+                    (!weapons.get(shotIndex).isBomb && !pipes.get(currentPipe).isSteel())) {
+                // checks if weapon is not already destroyed
+                if (!weapons.get(shotIndex).isDestroyed()) {
+                    pipes.remove(currentPipe); // removes the pipe on impact
+                    numPipes--; // decrements num pipes
+                    ShadowFlap.incrementScore(); //  increases the score
+                    weapons.get(shotIndex).setDestroyed(); // destroys the weapon after impact
                 }
+            } else if (!weapons.get(shotIndex).isDestroyed()) {
+                weapons.get(shotIndex).setDestroyed(); // destroys the weapon if not compatible
             }
         }
     }
@@ -152,14 +149,18 @@ public class Level1 extends Level {
                 weaponsInitiated = true;
             }
 
-            // updates the state of all pipes each frame
-            for (int i = 0; i < numPipes; i++) {
-                pipes.get(i).update(frame);
+            if (pipesInitiated) {
+                // updates the state of all pipes each frame
+                for (int i = 0; i < numPipes; i++) {
+                    pipes.get(i).update(frame);
+                }
             }
 
-            // updates the state of all weapons each frame
-            for (int i = 0; i < numWeapons; i++) {
-                this.weapons.get(i).update(frame);
+            if (weaponsInitiated) {
+                // updates the state of all weapons each frame
+                for (int i = 0; i < numWeapons; i++) {
+                    this.weapons.get(i).update(frame);
+                }
             }
 
             //draws the life bar for the level

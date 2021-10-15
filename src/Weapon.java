@@ -27,14 +27,14 @@ public abstract class Weapon {
      * Constructor initializes values for the object
      */
     public Weapon() {
-        MAX_Y = 500;
-        MIN_Y = 100;
-        WEAPON_SIDE = 32;
-        SHOT_PIXELS = 5;
+        this.MAX_Y = 500;
+        this.MIN_Y = 100;
+        this.WEAPON_SIDE = 32;
+        this.SHOT_PIXELS = 5;
 
-        x = Window.getWidth();
-        isShot = false;
-        isDestroyed = false;
+        this.x = Window.getWidth();
+        this.isShot = false;
+        this.isDestroyed = false;
     }
 
 

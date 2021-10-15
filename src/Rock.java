@@ -12,9 +12,9 @@ public class Rock extends Weapon{
      * Constructor initializes all values for rock
      */
     public Rock() {
-        ROCK_IMAGE = new Image("res/level-1/rock.png");
+        this.ROCK_IMAGE = new Image("res/level-1/rock.png");
         super.setWeaponY();
-        RANGE = 25;
+        this.RANGE = 25;
         isBomb = false; // false for rock class
     }
 

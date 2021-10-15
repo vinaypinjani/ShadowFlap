@@ -8,9 +8,9 @@ public class Bomb extends Weapon {
     private final double RANGE; // Holds the range for bomb after being shot
 
     public Bomb() {
-        BOMB_IMAGE = new Image("res/level-1/bomb.png");
+        this.BOMB_IMAGE = new Image("res/level-1/bomb.png");
         super.setWeaponY();
-        RANGE = 50;
+        this.RANGE = 50;
         isBomb = true; // true for bomb class
     }
 

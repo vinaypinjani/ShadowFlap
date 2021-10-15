@@ -2,7 +2,6 @@ import bagel.DrawOptions;
 import bagel.Image;
 import bagel.Window;
 import bagel.util.Rectangle;
-
 import java.util.Random;
 
 /**
